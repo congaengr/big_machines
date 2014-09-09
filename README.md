@@ -1,6 +1,18 @@
 # BigMachines
 
-TODO: Write a gem description
+[![Build Status](https://travis-ci.org/TinderBox/big_machines.png)](https://travis-ci.org/TinderBox/big_machines)
+
+Ruby gem for the undocumented BigMachines SOAP API
+
+### Implemented Operations
+
+* Security API - login, logout, getUserInfo, setSessionCurrency
+* Commerce API - getTransaction, updateTransaction (partial)
+
+### Services Not Implemented
+
+* Configuration, Parts, Data Tables, Users, Groups, Exchange Rates
+
 
 ## Installation
 
@@ -18,11 +30,66 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+
+#### Create Client
+
+```ruby
+client = BigMachines::Client.new('subdomain')
+```
+
+```ruby
+# Specify process name
+client = BigMachines::Client.new('subdomain', process_name: 'quotes_process')
+```
+
+
+#### Authenticate
+
+```ruby
+client.login(:username => 'foo', :password => 'password')
+```
+
+### set_session_currency
+
+```ruby
+client.set_session_currency('USD')
+# => Hash[:status]
+```
+
+### get_user_info
+
+```ruby
+client.get_user_info
+# => Hash[:user_info]
+```
+
+### get_transaction
+
+```ruby
+# Find transaction by id
+client.get_transaction(id)
+# => BigMachines::Transaction
+```
+
+### update_transaction
+
+```ruby
+# Update transaction
+client.update_transaction(id, data={})
+# => Hash[:status]
+```
+
+
+### logout
+
+```ruby
+client.logout
+```
+
 
 ## Contributing
 
-1. Fork it ( http://github.com/<my-github-username>/big_machines/fork )
+1. Fork it ( http://github.com/TinderBox/big_machines/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

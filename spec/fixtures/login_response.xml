@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <bm:loginResponse xmlns:bm="urn:soap.bigmachines.com">
+      <bm:status>
+        <bm:success>true</bm:success>
+        <bm:message>Successfully processed API for newtempge at Tue Sep 09 10:33:38 CDT 2014</bm:message>
+      </bm:status>
+      <bm:userInfo>
+        <bm:sessionId>E4A5CCEEA2A6746B4388F647149CD2FF</bm:sessionId>
+      </bm:userInfo>
+    </bm:loginResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

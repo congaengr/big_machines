@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:soap.bigmachines.com"
+    xmlns:bmxsd="urn:soap.bigmachines.com"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:targetNamespace="urn:soap.bigmachines.com"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <wsdl:types>
+        <xsd:schema attributeFormDefault="qualified"
+            elementFormDefault="qualified"
+            targetNamespace="urn:soap.bigmachines.com"
+            xmlns="http://www.w3.org/2001/XMLSchema" xmlns:bmxsd="urn:soap.bigmachines.com">
+            <xsd:import
+                namespace="http://schemas.xmlsoap.org/soap/envelope/" schemaLocation="http://schemas.xmlsoap.org/soap/envelope/"/>
+            <xsd:simpleType name="IntOrBlank">
+                <xsd:union memberTypes="xsd:integer">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:token">
+                            <xsd:enumeration value=""/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:union>
+            </xsd:simpleType>
+            <xsd:simpleType name="LongOrBlank">
+                <xsd:union memberTypes="xsd:long">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:token">
+                            <xsd:enumeration value=""/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:union>
+            </xsd:simpleType>
+            <xsd:simpleType name="FloatOrBlank">
+                <xsd:union memberTypes="xsd:float">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:token">
+                            <xsd:enumeration value=""/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:union>
+            </xsd:simpleType>
+            <xsd:simpleType name="DoubleOrBlank">
+                <xsd:union memberTypes="xsd:double">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:token">
+                            <xsd:enumeration value=""/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:union>
+            </xsd:simpleType>
+            <xsd:simpleType name="BooleanOrBlank">
+                <xsd:union memberTypes="xsd:boolean">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:token">
+                            <xsd:enumeration value=""/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:union>
+            </xsd:simpleType>
+            <xsd:simpleType name="ByteOrBlank">
+                <xsd:union memberTypes="xsd:byte">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:token">
+                            <xsd:enumeration value=""/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:union>
+            </xsd:simpleType>
+            <xsd:complexType name="anyType">
+                <xsd:sequence maxOccurs="1" minOccurs="1">
+                    <xsd:any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="FaultType">
+                <xsd:all>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="exceptionCode" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="exceptionMessage" nillable="false" type="xsd:string"/>
+                </xsd:all>
+            </xsd:complexType>
+            <xsd:element name="fault">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element maxOccurs="1" minOccurs="1"
+                            name="exceptionCode" nillable="false" type="xsd:string"/>
+                        <xsd:element maxOccurs="1" minOccurs="1"
+                            name="exceptionMessage" nillable="false" type="xsd:string"/>
+                        <xsd:element maxOccurs="1" minOccurs="0"
+                            name="exceptionDescription" nillable="true" type="xsd:string"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:complexType name="UserInfo">
+                <xsd:all>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="sessionId" nillable="false" type="xsd:string"/>
+                </xsd:all>
+                <xsd:attribute
+                    default="http://schemas.xmlsoap.org/soap/actor/next"
+                    ref="soapenv:actor" use="optional"/>
+                <xsd:attribute ref="soapenv:mustUnderstand" use="optional"/>
+            </xsd:complexType>
+            <xsd:element name="userInfo" type="bmxsd:UserInfo"/>
+            <xsd:element name="category">
+                <xsd:complexType>
+                    <xsd:simpleContent>
+                        <xsd:extension base="xsd:string">
+                            <xsd:attribute
+                                default="http://schemas.xmlsoap.org/soap/actor/next"
+                                ref="soapenv:actor" use="optional"/>
+                            <xsd:attribute ref="soapenv:mustUnderstand" use="optional"/>
+                        </xsd:extension>
+                    </xsd:simpleContent>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="xsdInfo">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element
+                            fixed="https://newtempge.bigmachines.com/bmfsweb/newtempge/schema/v1_0/security/Security.xsd"
+                            maxOccurs="1" minOccurs="1"
+                            name="schemaLocation" nillable="false" type="xsd:string"/>
+                    </xsd:all>
+                    <xsd:attribute
+                        default="http://schemas.xmlsoap.org/soap/actor/next"
+                        ref="soapenv:actor" use="optional"/>
+                    <xsd:attribute ref="soapenv:mustUnderstand" use="optional"/>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:complexType name="NotificationPreferenceType">
+                <xsd:all>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="is_notify_email" nillable="false" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="is_notify_fax" nillable="false" type="xsd:boolean"/>
+                </xsd:all>
+            </xsd:complexType>
+            <xsd:complexType name="UserType">
+                <xsd:all>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="session_currency" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="send_password_email" nillable="true" type="bmxsd:BooleanOrBlank"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="company_name" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="login" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="password" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="type"
+                        nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="first_name" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="last_name" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="job_title" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="email" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="phone" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="fax"
+                        nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_address_1" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_address_2" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_city" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_state_province" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_zip" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_country" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="separate_ship_addr" nillable="true" type="bmxsd:BooleanOrBlank"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_address_1" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_address_2" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_city" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_state_province" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_zip" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_country" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="notification_pref" nillable="true" type="bmxsd:NotificationPreferenceType"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bm_language" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="currency_preference" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_first_name" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_last_name" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_company" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_company_2" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_phone" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_fax" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bill_email" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_first_name" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_last_name" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_company" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_company_2" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_phone" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_fax" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="ship_email" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="bm_units" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="date_format" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="time_zone" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="number_format" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="partner_login" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="partner_password" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="status" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="super_user_access_perm" nillable="false" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="unplugged_default_check_in"
+                        nillable="false" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="enabled_for_sso" nillable="false" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="external_sso_id" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="approval_delegate" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="mobile_enabled" nillable="false" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="web_services_only" nillable="false" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="group_list" nillable="true">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element maxOccurs="unbounded"
+                                    minOccurs="0" name="group" nillable="true">
+                                    <xsd:complexType>
+                                    <xsd:sequence>
+                                    <xsd:element maxOccurs="1"
+                                    minOccurs="1"
+                                    name="variable_name"
+                                    nillable="false" type="xsd:string"/>
+                                    </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:all>
+            </xsd:complexType>
+            <xsd:complexType name="LoginResponseUserInfo">
+                <xsd:all>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="sessionCurrency" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="sessionId" nillable="false" type="xsd:string"/>
+                </xsd:all>
+                <xsd:attribute
+                    default="http://schemas.xmlsoap.org/soap/actor/next"
+                    ref="soapenv:actor" use="optional"/>
+                <xsd:attribute ref="soapenv:mustUnderstand" use="optional"/>
+            </xsd:complexType>
+            <xsd:complexType name="LoginRequestUserInfoType">
+                <xsd:all>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="username" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="password" nillable="false" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="sessionCurrency" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="sso"
+                        nillable="true" type="bmxsd:BooleanOrBlank"/>
+                </xsd:all>
+            </xsd:complexType>
+            <xsd:complexType name="CommonStatusType">
+                <xsd:all>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="success" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="message" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="records_read" nillable="true" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="records_failed" nillable="true" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="records_deleted" nillable="true" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="records_returned" nillable="true" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="records_inserted" nillable="true" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="records_updated" nillable="true" type="xsd:int"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="detail" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="warning" nillable="true" type="xsd:string"/>
+                </xsd:all>
+            </xsd:complexType>
+            <xsd:element name="getUserInfo">
+                <xsd:complexType>
+                    <xsd:complexContent>
+                        <xsd:restriction base="xsd:anyType"/>
+                    </xsd:complexContent>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getUserInfoResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element maxOccurs="1" minOccurs="1"
+                            name="status" nillable="false" type="bmxsd:CommonStatusType"/>
+                        <xsd:element maxOccurs="1" minOccurs="1"
+                            name="userInfo" nillable="false" type="bmxsd:UserType"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="login">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="userInfo" type="bmxsd:LoginRequestUserInfoType"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="loginResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element maxOccurs="1" minOccurs="1"
+                            name="status" nillable="false" type="bmxsd:CommonStatusType"/>
+                        <xsd:element maxOccurs="1" minOccurs="1"
+                            name="userInfo" nillable="false" type="bmxsd:LoginResponseUserInfo"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="logout">
+                <xsd:complexType>
+                    <xsd:complexContent>
+                        <xsd:restriction base="xsd:anyType"/>
+                    </xsd:complexContent>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="logoutResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element maxOccurs="1" minOccurs="1"
+                            name="status" nillable="false" type="bmxsd:CommonStatusType"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="setSessionCurrency">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="sessionCurrency" type="xsd:string"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="setSessionCurrencyResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element maxOccurs="1" minOccurs="1"
+                            name="status" nillable="false" type="bmxsd:CommonStatusType"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="getUserInfoRequest">
+        <wsdl:part element="targetNamespace:getUserInfo" name="getUserInfo"/>
+    </wsdl:message>
+    <wsdl:message name="getUserInfoResponse">
+        <wsdl:part element="targetNamespace:getUserInfoResponse" name="getUserInfoResponse"/>
+    </wsdl:message>
+    <wsdl:message name="BusinessLogicException">
+        <wsdl:part element="targetNamespace:fault" name="fault"/>
+    </wsdl:message>
+    <wsdl:message name="loginRequest">
+        <wsdl:part element="targetNamespace:login" name="login"/>
+    </wsdl:message>
+    <wsdl:message name="loginResponse">
+        <wsdl:part element="targetNamespace:loginResponse" name="loginResponse"/>
+    </wsdl:message>
+    <wsdl:message name="logoutRequest">
+        <wsdl:part element="targetNamespace:logout" name="logout"/>
+    </wsdl:message>
+    <wsdl:message name="logoutResponse">
+        <wsdl:part element="targetNamespace:logoutResponse" name="logoutResponse"/>
+    </wsdl:message>
+    <wsdl:message name="setSessionCurrencyRequest">
+        <wsdl:part element="targetNamespace:setSessionCurrency" name="setSessionCurrency"/>
+    </wsdl:message>
+    <wsdl:message name="setSessionCurrencyResponse">
+        <wsdl:part element="targetNamespace:setSessionCurrencyResponse" name="setSessionCurrencyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="XsdInfo">
+        <wsdl:part element="targetNamespace:xsdInfo" name="xsdInfo"/>
+    </wsdl:message>
+    <wsdl:message name="Category">
+        <wsdl:part element="targetNamespace:category" name="category"/>
+    </wsdl:message>
+    <wsdl:message name="UserInfo">
+        <wsdl:part element="targetNamespace:userInfo" name="userInfo"/>
+    </wsdl:message>
+    <wsdl:portType name="SecurityServicePortType">
+        <wsdl:operation name="getUserInfo">
+            <wsdl:input message="targetNamespace:getUserInfoRequest"/>
+            <wsdl:output message="targetNamespace:getUserInfoResponse"/>
+            <wsdl:fault message="targetNamespace:BusinessLogicException" name="BusinessLogicException"/>
+        </wsdl:operation>
+        <wsdl:operation name="login">
+            <wsdl:input message="targetNamespace:loginRequest"/>
+            <wsdl:output message="targetNamespace:loginResponse"/>
+            <wsdl:fault message="targetNamespace:BusinessLogicException" name="BusinessLogicException"/>
+        </wsdl:operation>
+        <wsdl:operation name="logout">
+            <wsdl:input message="targetNamespace:logoutRequest"/>
+            <wsdl:output message="targetNamespace:logoutResponse"/>
+            <wsdl:fault message="targetNamespace:BusinessLogicException" name="BusinessLogicException"/>
+        </wsdl:operation>
+        <wsdl:operation name="setSessionCurrency">
+            <wsdl:input message="targetNamespace:setSessionCurrencyRequest"/>
+            <wsdl:output message="targetNamespace:setSessionCurrencyResponse"/>
+            <wsdl:fault message="targetNamespace:BusinessLogicException" name="BusinessLogicException"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SecurityServiceBinding" type="targetNamespace:SecurityServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getUserInfo">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:UserInfo" part="userInfo" use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:Category" part="category" use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:XsdInfo" part="xsdInfo" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="BusinessLogicException">
+                <soap:fault name="BusinessLogicException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="login">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:Category" part="category" use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:XsdInfo" part="xsdInfo" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="BusinessLogicException">
+                <soap:fault name="BusinessLogicException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="logout">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:UserInfo" part="userInfo" use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:Category" part="category" use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:XsdInfo" part="xsdInfo" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="BusinessLogicException">
+                <soap:fault name="BusinessLogicException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="setSessionCurrency">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:UserInfo" part="userInfo" use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:Category" part="category" use="literal"/>
+                <soap:header encodingStyle=""
+                    message="targetNamespace:XsdInfo" part="xsdInfo" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="BusinessLogicException">
+                <soap:fault name="BusinessLogicException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="SecurityService">
+        <wsdl:port binding="targetNamespace:SecurityServiceBinding" name="SecurityServicePort">
+            <soap:address location="https://newtempge.bigmachines.com/v1_0/receiver"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
