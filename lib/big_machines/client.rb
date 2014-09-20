@@ -10,6 +10,7 @@ module BigMachines
       @site_name = site_name
       raise "Valid Site Name must be provided" if @site_name.nil? || @site_name.empty?
       @process_var_name = options[:process_name] || "quotes_process"
+      @logger = options[:logger] || false
 
       @namespaces = {
         "xmlns:bm" => "urn:soap.bigmachines.com"
@@ -20,13 +21,7 @@ module BigMachines
 
       @endpoint = "https://#{@site_name}.bigmachines.com/v1_0/receiver"
 
-      @client = Savon.client(
-        wsdl: @security_wsdl,
-        endpoint: @endpoint,
-        soap_header: headers(:security),
-        convert_request_keys_to: :none,
-        pretty_print_xml: true
-      )
+      @client = Savon.client(configuration)
     end
 
     def headers(type=:security)
@@ -171,6 +166,19 @@ module BigMachines
 
     protected
 
+    def configuration(custom={})
+      {
+        wsdl: @security_wsdl,
+        endpoint: @endpoint,
+        soap_header: headers(:security),
+        filters: [:password],
+        convert_request_keys_to: :none,
+        pretty_print_xml: true,
+        logger: @logger,
+        log: @logger != false
+      }.merge(custom)
+    end
+
     def commerce_client
       @commerce_client ||= client_api(@commerce_wsdl)
     end
@@ -181,14 +189,7 @@ module BigMachines
 
     def client_api(wsdl)
       category = wsdl.include?('security') ? :security : :commerce
-
-      client = Savon.client(
-        wsdl: wsdl,
-        endpoint: @endpoint,
-        soap_header: headers(category),
-        convert_request_keys_to: :none,
-        pretty_print_xml: true
-      )
+      client = Savon.client(configuration(wsdl: wsdl, soap_header: headers(category)))
     end
 
     def security_call(method, message_hash={})
