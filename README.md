@@ -46,7 +46,7 @@ client = BigMachines::Client.new('subdomain', process_name: 'quotes_process')
 #### Authenticate
 
 ```ruby
-client.login(:username => 'foo', :password => 'password')
+client.login('foo', 'password')
 ```
 
 ### set_session_currency
@@ -74,8 +74,8 @@ client.get_transaction(id)
 ### update_transaction
 
 ```ruby
-# Update transaction
-client.update_transaction(id, data={})
+# Update transaction (quote_process)
+client.update_transaction(id, data={notesCMPM_es: "Sample Notes"})
 # => Hash[:status]
 ```
 
