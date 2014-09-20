@@ -60,45 +60,26 @@ module BigMachines
       @client.operations
     end
 
-    # Public: Get the names of all wsdl operations.
-    #
-    # Supports a username/password (with token) combination or session_id/server_url pair.
+    # Public: login
     #
     # Examples
     #
-    #   client.login(username: 'test', password: 'password_and_token')
-    #   # => {...}
-    #
-    #   client.login(session_id: 'abcd1234', server_url: 'https://na1.salesforce.com/')
+    #   client.login(username, password)
     #   # => {...}
     #
     # Returns Hash of login response and user info
-    def login(options={})
+    def login(username, password)
       result = nil
-      if options[:username] && options[:password]
-        message = {userInfo: {username: options[:username], password: options[:password]}}
-        response = self.security_call(:login, message)
+      message = {userInfo: {username: username, password: password}}
+      response = self.security_call(:login, message)
 
-        userInfo = response[:user_info]
+      userInfo = response[:user_info]
 
-        @session_id = userInfo[:session_id]
-      else
-        raise ArgumentError.new("Must provide username/password or session_id/server_url.")
-      end
+      @session_id = userInfo[:session_id]
 
-      @security_client = Savon.client(
-        wsdl: @security_wsdl,
-        endpoint: @endpoint,
-        soap_header: headers(:security),
-        convert_request_keys_to: :none,
-        pretty_print_xml: true
-      )
+      @security_client = Savon.client(configuration)
 
-      # If a session_id/server_url were passed in then invoke get_user_info for confirmation.
-      # Method missing to call_soap_api
-      result = self.get_user_info if options[:session_id]
-
-      result
+      response[:status][:success]
     end
     alias_method :authenticate, :login
 

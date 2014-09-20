@@ -24,7 +24,7 @@ describe BigMachines::Client do
       stub = stub_login_request({with_body: login_body})
       stub.to_return(:status => 200, :body => fixture("login_response"))
 
-      subject.login(username: 'jheth', password: 'changeme')
+      subject.login('jheth', 'changeme')
     end
   end
 
