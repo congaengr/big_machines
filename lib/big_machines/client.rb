@@ -99,14 +99,14 @@ module BigMachines
     #     </bm:return_specific_attributes>
     #   </bm:transaction>
     # </bm:getTransaction>
-    def get_transaction(id)
+    def get_transaction(id, document_var_name='quote_process')
       transaction = {
         transaction: {
           id: id,
           return_specific_attributes: {
             documents: {
               document: {
-                var_name: "quote_process"
+                var_name: document_var_name
               }
             }
           }
