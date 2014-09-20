@@ -132,17 +132,20 @@ module BigMachines
     #   </bm:transaction>
     # </bm:updateTransaction>
     def update_transaction(id, data={})
+
+      # :opportunityName_quote => 'Test Oppty Auto Approval TinderBox 12',
+      # :siteName_quote => 'My Dummy Site'
+      quote_process_data = {
+        :"@bs_id" => id,
+        :"@data_type" => 0,
+        :"@document_number" => 1
+      }.merge(data)
+
       transaction = {
         transaction: {
           id: id,
           data_xml: {
-            quote_process: {
-              :"@bs_id" => id,
-              :"@data_type" => 0,
-              :"@document_number" => 1,
-              :opportunityName_quote => 'Test Oppty Auto Approval TinderBox 12',
-              :siteName_quote => 'My Dummy Site'
-            }
+            quote_process: quote_process_data
           },
           action_data: {
             action_var_name: '_update_line_items'

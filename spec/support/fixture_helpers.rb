@@ -6,11 +6,6 @@ module FixtureHelpers
       stub_api_request(options)
     end
 
-    def stub_security_request(options={})
-      options = options.merge({headers: {service: :security}})
-      stub_api_request(options)
-    end
-
     def stub_api_request(options={})
       options = {
         :method => :post,

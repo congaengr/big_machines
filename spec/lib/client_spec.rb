@@ -66,6 +66,8 @@ describe BigMachines::Client do
     describe "getTransaction" do
       it "returns transaction with specific attributes" do
 
+        # NOTE: return_specific_attributes is optional
+        # All attributes are returned when not defined.
         body = %Q{
   <bm:getTransaction>
     <bm:transaction>
@@ -97,6 +99,67 @@ describe BigMachines::Client do
 
         expect(quote_line_items.length).to eq(109)
         expect(quote_line_items.first[:_model_id]).to eq("17400975")
+      end
+
+  it "returns not found error" do
+
+        # NOTE: return_specific_attributes is optional
+        # All attributes are returned when not defined.
+        body = %Q{
+  <bm:getTransaction>
+    <bm:transaction>
+      <bm:id>265393499</bm:id>
+      <bm:return_specific_attributes>
+        <bm:documents>
+          <bm:document>
+            <bm:var_name>quote_process</bm:var_name>
+          </bm:document>
+        </bm:documents>
+      </bm:return_specific_attributes>
+    </bm:transaction>
+  </bm:getTransaction>
+        }.gsub(/^\s+/, '').gsub(/[\n]/, '').gsub("bm:", "targetNamespace:")
+
+        stub = stub_commerce_request({with_body: body, fixture: 'get_transaction_not_found_response'})
+
+        expect {
+          subject.get_transaction(265393499)
+        }.to raise_error(Savon::SOAPFault)
+      end
+
+    end
+
+    describe "updateTransaction" do
+      it "confirms that transaction was updated" do
+
+        body = %Q{
+  <bm:updateTransaction>
+    <bm:transaction>
+      <bm:id>26539349</bm:id>
+        <bm:data_xml>
+          <bm:quote_process bs_id="26539349" data_type="0" document_number="1">
+            <bm:opportunityName_quote>Test Oppty Auto Approval TinderBox</bm:opportunityName_quote>
+            <bm:siteName_quote>MY DUMMY SITE</bm:siteName_quote>
+            <bm:notesCMPM_es>http://subdomain.mytinder.com/view/X2Y58?version=1</bm:notesCMPM_es>
+          </bm:quote_process>
+        </bm:data_xml>
+        <bm:action_data>
+          <bm:action_var_name>_update_line_items</bm:action_var_name>
+        </bm:action_data>
+    </bm:transaction>
+  </bm:updateTransaction>
+        }.gsub(/^\s+/, '').gsub(/[\n]/, '').gsub("bm:", "targetNamespace:")
+
+        stub = stub_commerce_request({with_body: body, fixture: 'update_transaction_response'})
+
+        data = {
+          opportunityName_quote: "Test Oppty Auto Approval TinderBox",
+          siteName_quote: "MY DUMMY SITE",
+          notesCMPM_es: "http://subdomain.mytinder.com/view/X2Y58?version=1"
+        }
+        response = subject.update_transaction(26539349, data)
+
+        expect(response[:status][:success]).to eq(true)
       end
     end
   end

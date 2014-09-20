@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <bm:updateTransactionResponse xmlns:bm="urn:soap.bigmachines.com">
+      <bm:status>
+        <bm:success>true</bm:success>
+        <bm:message>Successfully processed API for newtempge at Sat Sep 20 11:23:05 CDT 2014</bm:message>
+      </bm:status>
+    </bm:updateTransactionResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

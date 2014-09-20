@@ -1,0 +1,14 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <soapenv:Fault>
+      <faultcode>soapenv:Server</faultcode>
+      <faultstring>COMMERCE-ERR:No transactions were found for the given ID, 266898199</faultstring>
+      <detail xmlns:bm="urn:soap.bigmachines.com">
+        <bm:fault>
+          <bm:exceptionCode>COMMERCE-ERR</bm:exceptionCode>
+          <bm:exceptionMessage>No transactions were found for the given ID, 266898199</bm:exceptionMessage>
+        </bm:fault>
+      </detail>
+    </soapenv:Fault>
+  </soapenv:Body>
+</soapenv:Envelope>
