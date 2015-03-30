@@ -260,6 +260,68 @@ describe BigMachines::Client do
 
     end
 
+    describe "importFileAttachments" do
+      it "uploads new file attachment" do
+
+        contents = "This is a test"
+        encoded = Base64.strict_encode64(contents)
+
+        body = %Q{
+  <bm:importFileAttachments>
+    <bm:mode>update</bm:mode>
+    <bm:attachments>
+      <bm:attachment>
+        <bm:document_number>1</bm:document_number>
+        <bm:variable_name>uploadEngineeringTemplate_File</bm:variable_name>
+        <bm:filename>NewProposal.txt</bm:filename>
+        <bm:file_content>#{encoded}</bm:file_content>
+      </bm:attachment>
+    </bm:attachments>
+    <bm:transaction>
+      <bm:process_var_name>quotes_process_bmClone_16</bm:process_var_name>
+      <bm:id>34706909</bm:id>
+    </bm:transaction>
+  </bm:importFileAttachments>
+        }.gsub(/^\s+/, '').gsub(/[\n]/, '').gsub("bm:", "targetNamespace:")
+
+        stub = stub_commerce_request({with_body: body, fixture: 'import_file_attachments_response'})
+
+        File.open('NewProposal.txt', 'w') {|f| f.write(contents) }
+        file = File.open('NewProposal.txt')
+        response = subject.upload_attachment(34706909, file)
+
+        File.unlink('NewProposal.txt')
+
+        expect(response[:status][:success]).to eq(true)
+      end
+
+      it "deletes file attachment" do
+
+        body = %Q{
+  <bm:importFileAttachments>
+    <bm:mode>delete</bm:mode>
+    <bm:attachments>
+      <bm:attachment>
+        <bm:document_number>1</bm:document_number>
+        <bm:variable_name>uploadEngineeringTemplate_File</bm:variable_name>
+      </bm:attachment>
+    </bm:attachments>
+    <bm:transaction>
+      <bm:process_var_name>quotes_process_bmClone_16</bm:process_var_name>
+      <bm:id>34706909</bm:id>
+    </bm:transaction>
+  </bm:importFileAttachments>
+        }.gsub(/^\s+/, '').gsub(/[\n]/, '').gsub("bm:", "targetNamespace:")
+
+        stub = stub_commerce_request({with_body: body, fixture: 'import_file_attachments_response'})
+
+        response = subject.delete_attachment(34706909)
+
+        expect(response[:status][:success]).to eq(true)
+      end
+
+    end
+
   end
   # Commerce API
 end

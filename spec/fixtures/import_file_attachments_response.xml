@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <bm:importFileAttachmentsResponse xmlns:bm="urn:soap.bigmachines.com">
+      <bm:status>
+        <bm:success>true</bm:success>
+        <bm:message>Mon Mar 30 16:00:33 CDT 2015 - Successfully processed API for newtempge</bm:message>
+      </bm:status>
+    </bm:importFileAttachmentsResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

@@ -11,18 +11,16 @@
   </soapenv:Header>
   <soapenv:Body>
     <bm:importFileAttachments xmlns:bm="urn:soap.bigmachines.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <bm:mode>update</bm:mode>
+      <bm:mode>delete</bm:mode>
       <bm:attachments>
         <bm:attachment>
-          <bm:document_number/>
-          <bm:variable_name/>
-          <bm:filename/>
-          <bm:file_content/>
+          <bm:document_number>1</bm:document_number>
+          <bm:variable_name>uploadEngineeringTemplate_File</bm:variable_name>
         </bm:attachment>
       </bm:attachments>
       <bm:transaction>
         <bm:process_var_name>quotes_process_bmClone_16</bm:process_var_name>
-        <bm:id/>
+        <bm:id>34706909</bm:id>
       </bm:transaction>
     </bm:importFileAttachments>
   </soapenv:Body>

@@ -183,7 +183,41 @@ module BigMachines
       attachments
     end
 
-    def upload_file_attachment(transaction_id, variable_name="uploadEngineeringTemplate_File", attachment)
+    def upload_attachment(transaction_id, file, variable_name: 'uploadEngineeringTemplate_File')
+
+      import = {
+        mode: 'update',
+        attachments: {
+          attachment: {
+            document_number: 1,
+            variable_name: variable_name,
+            filename: file.path,
+            file_content: Base64.strict_encode64(file.read)
+          }
+        },
+        transaction: {
+          process_var_name: @process_var_name,
+          id: transaction_id
+        }
+      }
+      commerce_call(:import_file_attachments, import)
+    end
+
+    def delete_attachment(transaction_id, variable_name: 'uploadEngineeringTemplate_File')
+      delete = {
+        mode: 'delete',
+        attachments: {
+          attachment: {
+            document_number: 1,
+            variable_name: variable_name
+          }
+        },
+        transaction: {
+          process_var_name: @process_var_name,
+          id: transaction_id
+        }
+      }
+      commerce_call(:import_file_attachments, delete)
     end
 
     # Supports the following No Argument methods:
