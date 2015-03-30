@@ -156,6 +156,36 @@ module BigMachines
       commerce_call(:update_transaction, transaction)
     end
 
+    def get_file_attachments(transaction_id, variable_name: "uploadEngineeringTemplate_File", mode: "content", inline: true)
+
+      export = {
+        mode: mode,
+        inline: inline,
+        attachments: {
+          attachment: {
+            document_number: 1,
+            variable_name: variable_name
+          }
+        },
+        transaction: {
+          process_var_name: @process_var_name,
+          id: transaction_id
+        }
+      }
+
+      result = commerce_call(:export_file_attachments, export)
+
+      attachments = []
+      result[:attachments].each do |key, data|
+        attachments << BigMachines::Attachment.new(data)
+      end
+
+      attachments
+    end
+
+    def upload_file_attachment(transaction_id, variable_name="uploadEngineeringTemplate_File", attachment)
+    end
+
     # Supports the following No Argument methods:
     #   get_user_info
     #   logout
