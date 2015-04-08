@@ -8,8 +8,12 @@ module BigMachines
       @transaction = response[:transaction]
       # Quote
       @quote_process = @transaction[:data_xml][:quote_process]
-      # Quote Line Items
-      @line_process = @quote_process[:sub_documents][:line_process]
+      # Line Items
+      @line_process = if @quote_process[:sub_documents].present?
+        @quote_process[:sub_documents][:line_process]
+      else
+        []
+      end
     end
 
     def method_missing(method, *args)
