@@ -63,6 +63,8 @@ client.get_user_info
 # => Hash[:user_info]
 ```
 
+#### Commerce
+
 ### get_transaction
 
 ```ruby
@@ -79,6 +81,30 @@ client.update_transaction(id, data={notesCMPM_es: "Sample Notes"})
 # => Hash[:status]
 ```
 
+#### Attachments
+
+### get_attachment
+
+```ruby
+# Retrieve Single File Attachment
+client.get_attachment(transaction_id, "uploadTemplate_File")
+# => BigMachines::Attachment
+```
+
+### upload_attachment
+
+```ruby
+# Upload File Attachment
+client.upload_attachment(transaction_id, file, "uploadTemplate_File")
+# => {status: true, message: '...'}
+```
+### delete_attachment
+
+```ruby
+# Delete File Attachement
+client.delete_attachment(transaction_id, "uploadTemplate_File")
+# => {status: true, message: '...'}
+```
 
 ### logout
 

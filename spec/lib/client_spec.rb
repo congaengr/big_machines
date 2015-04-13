@@ -184,7 +184,7 @@ describe BigMachines::Client do
 
         stub = stub_commerce_request({with_body: body, fixture: 'export_file_attachments_metadata_response'})
 
-        attachments = subject.get_file_attachments(34706909, mode: 'metadata')
+        attachments = subject.get_attachment(34706909, "uploadEngineeringTemplate_File", mode: 'metadata')
 
         expect(attachments).to be_a(Array)
         expect(attachments.size).to eq(1)
@@ -217,7 +217,7 @@ describe BigMachines::Client do
 
         stub = stub_commerce_request({with_body: body, fixture: 'export_file_attachments_content_inline_response'})
 
-        attachments = subject.get_file_attachments(34706909)
+        attachments = subject.get_attachment(34706909, "uploadEngineeringTemplate_File")
 
         expect(attachments).to be_a(Array)
         expect(attachments.size).to eq(1)
@@ -248,7 +248,7 @@ describe BigMachines::Client do
 
         stub = stub_commerce_request({with_body: body, fixture: 'export_file_attachments_content_response'})
 
-        attachments = subject.get_file_attachments(34706909, inline: false)
+        attachments = subject.get_attachment(34706909, "uploadEngineeringTemplate_File", inline: false)
 
         expect(attachments).to be_a(Array)
         expect(attachments.size).to eq(1)
@@ -288,7 +288,7 @@ describe BigMachines::Client do
 
         File.open('NewProposal.txt', 'w') {|f| f.write(contents) }
         file = File.open('NewProposal.txt')
-        response = subject.upload_attachment(34706909, file)
+        response = subject.upload_attachment(34706909, file, "uploadEngineeringTemplate_File")
 
         File.unlink('NewProposal.txt')
 
@@ -315,7 +315,7 @@ describe BigMachines::Client do
 
         stub = stub_commerce_request({with_body: body, fixture: 'import_file_attachments_response'})
 
-        response = subject.delete_attachment(34706909)
+        response = subject.delete_attachment(34706909, "uploadEngineeringTemplate_File")
 
         expect(response[:status][:success]).to eq(true)
       end

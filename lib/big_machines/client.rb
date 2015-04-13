@@ -156,14 +156,15 @@ module BigMachines
       commerce_call(:update_transaction, transaction)
     end
 
-    def get_file_attachments(transaction_id, variable_name: "uploadEngineeringTemplate_File", mode: "content", inline: true)
+    # Returns a single BigMachines::Attachment based on the variable_name provided.
+    def get_attachment(transaction_id, variable_name, document_number: 1, mode: "content", inline: true)
 
       export = {
         mode: mode,
         inline: inline,
         attachments: {
           attachment: {
-            document_number: 1,
+            document_number: document_number,
             variable_name: variable_name
           }
         },
@@ -183,13 +184,14 @@ module BigMachines
       attachments
     end
 
-    def upload_attachment(transaction_id, file, variable_name: 'uploadEngineeringTemplate_File')
+    # Uploads a single file to the specified field in BigMachines
+    def upload_attachment(transaction_id, file, variable_name, document_number: 1)
 
       import = {
         mode: 'update',
         attachments: {
           attachment: {
-            document_number: 1,
+            document_number: document_number,
             variable_name: variable_name,
             filename: file.path,
             file_content: Base64.strict_encode64(file.read)
@@ -203,12 +205,13 @@ module BigMachines
       commerce_call(:import_file_attachments, import)
     end
 
-    def delete_attachment(transaction_id, variable_name: 'uploadEngineeringTemplate_File')
+    # Deletes the file associated with the specified field in BigMachines.
+    def delete_attachment(transaction_id, variable_name, document_number: 1)
       delete = {
         mode: 'delete',
         attachments: {
           attachment: {
-            document_number: 1,
+            document_number: document_number,
             variable_name: variable_name
           }
         },
