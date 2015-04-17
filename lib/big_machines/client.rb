@@ -68,13 +68,13 @@ module BigMachines
       message = {userInfo: {username: username, password: password}}
       response = self.security_call(:login, message)
 
-      userInfo = response[:user_info]
+      userInfo = response["userInfo"]
 
-      @session_id = userInfo[:session_id]
+      @session_id = userInfo["sessionId"]
 
       @security_client = Savon.client(configuration)
 
-      response[:status][:success]
+      response["status"]["success"]
     end
     alias_method :authenticate, :login
 
@@ -177,7 +177,7 @@ module BigMachines
       result = commerce_call(:export_file_attachments, export)
 
       attachments = []
-      result[:attachments].each do |key, data|
+      result["attachments"].each do |key, data|
         attachments << BigMachines::Attachment.new(data)
       end
 
@@ -243,6 +243,7 @@ module BigMachines
         soap_header: headers(:security),
         filters: [:password],
         convert_request_keys_to: :none,
+        convert_response_tags_to: lambda { |tag| tag },
         pretty_print_xml: true,
         logger: @logger,
         log: @logger != false
@@ -276,11 +277,12 @@ module BigMachines
       response = response.to_hash
 
       # Get Response Body
-      response = response["#{method}_response".to_sym]
+      key = method.to_s.gsub(/_(\w)/) {|x| x[1].upcase }
+      response = response["#{key}Response"]
 
       # Raise error when response contains errors
-      if response.is_a?(Hash) && response[:status] && response[:status][:success] == false
-        raise Savon::Error.new(response[:status][:message])
+      if response.is_a?(Hash) && response["status"] && response["status"]["success"] == false
+        raise Savon::Error.new(response["status"]["message"])
       end
 
       return response

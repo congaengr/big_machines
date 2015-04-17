@@ -34,7 +34,7 @@ describe BigMachines::Client do
       stub = stub_api_request({with_body: body, fixture: 'logout_response'})
 
       response = subject.logout
-      expect(response[:status][:success]).to eq(true)
+      expect(response["status"]["success"]).to eq(true)
     end
 
   end
@@ -45,10 +45,10 @@ describe BigMachines::Client do
       stub = stub_api_request({with_body: body, fixture: 'get_user_info_response'})
 
       response = subject.get_user_info
-      user_info = response[:user_info]
-      expect(user_info[:company_name]).to eq('newtempge')
-      expect(user_info[:first_name]).to eq('Joe')
-      expect(user_info[:last_name]).to eq('Heth')
+      user_info = response["userInfo"]
+      expect(user_info["company_name"]).to eq('newtempge')
+      expect(user_info["first_name"]).to eq('Joe')
+      expect(user_info["last_name"]).to eq('Heth')
     end
   end
 
@@ -58,7 +58,7 @@ describe BigMachines::Client do
       stub = stub_api_request({with_body: body, fixture: 'set_session_currency_response'})
 
       response = subject.set_session_currency('USD')
-      expect(response[:status][:success]).to eq(true)
+      expect(response["status"]["success"]).to eq(true)
     end
   end
 
@@ -93,12 +93,13 @@ describe BigMachines::Client do
 
         quote_process = transaction.quote
         expect(quote_process).to be_a(Hash)
+        expect(quote_process["_document_number"]).to eq("1")
 
         quote_line_items = transaction.quote_line_items
         expect(quote_line_items).to be_a(Array)
 
         expect(quote_line_items.length).to eq(109)
-        expect(quote_line_items.first[:_model_id]).to eq("17400975")
+        expect(quote_line_items.first["_model_id"]).to eq("17400975")
       end
 
     it "returns not found error" do
@@ -158,7 +159,7 @@ describe BigMachines::Client do
         }
         response = subject.update_transaction(26539349, data)
 
-        expect(response[:status][:success]).to eq(true)
+        expect(response["status"]["success"]).to eq(true)
       end
     end
 
@@ -255,7 +256,7 @@ describe BigMachines::Client do
 
         file = attachments.first
         expect(file.filename).to eq('1020636-38959 Rev 0.docx')
-        expect(file.file_content[:"@bm:href"]).to eq("cid:1020636-38959_Rev_0.docx@newtempge.bigmachines.com")
+        expect(file.file_content["@bm:href"]).to eq("cid:1020636-38959_Rev_0.docx@newtempge.bigmachines.com")
       end
 
     end
@@ -292,7 +293,7 @@ describe BigMachines::Client do
 
         File.unlink('NewProposal.txt')
 
-        expect(response[:status][:success]).to eq(true)
+        expect(response["status"]["success"]).to eq(true)
       end
 
       it "deletes file attachment" do
@@ -317,7 +318,7 @@ describe BigMachines::Client do
 
         response = subject.delete_attachment(34706909, "uploadEngineeringTemplate_File")
 
-        expect(response[:status][:success]).to eq(true)
+        expect(response["status"]["success"]).to eq(true)
       end
 
     end
