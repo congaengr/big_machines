@@ -44,11 +44,11 @@ describe BigMachines::Client do
       body = %Q{<targetNamespace:getUserInfo></targetNamespace:getUserInfo>}
       stub = stub_api_request({with_body: body, fixture: 'get_user_info_response'})
 
-      response = subject.get_user_info
-      user_info = response["userInfo"]
-      expect(user_info["company_name"]).to eq('newtempge')
-      expect(user_info["first_name"]).to eq('Joe')
-      expect(user_info["last_name"]).to eq('Heth')
+      user_info = subject.get_user_info
+      expect(user_info).to be_a(BigMachines::UserInfo)
+      expect(user_info.company_name).to eq('newtempge')
+      expect(user_info.first_name).to eq('Joe')
+      expect(user_info.last_name).to eq('Heth')
     end
   end
 
