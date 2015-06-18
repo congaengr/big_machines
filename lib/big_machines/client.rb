@@ -3,6 +3,7 @@ module BigMachines
 
     attr_reader :client
     attr_reader :headers
+    attr_accessor :session_id
 
     # The partner.wsdl is used by default but can be changed by passing in a new :wsdl option.
     # A client_id can be
@@ -223,11 +224,16 @@ module BigMachines
       commerce_call(:import_file_attachments, delete)
     end
 
+    def get_user_info
+      response = security_call(:get_user_info)
+      BigMachines::UserInfo.new(response)
+    end
+
     # Supports the following No Argument methods:
     #   get_user_info
     #   logout
     def method_missing(method, *args)
-      if [:get_user_info, :logout].include?(method)
+      if [:logout].include?(method)
         call_soap_api(security_client, method, *args)
       else
         super
