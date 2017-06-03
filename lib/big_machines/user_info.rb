@@ -3,7 +3,7 @@ module BigMachines
     attr_reader :hash
 
     def initialize(response)
-      @hash = response["userInfo"]
+      @hash = response['userInfo']
     end
 
     def method_missing(method, *args)

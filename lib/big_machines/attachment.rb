@@ -7,7 +7,7 @@ module BigMachines
     end
 
     def write(file_path)
-      data = Base64.strict_decode64(@raw_attachment["file_content"])
+      data = Base64.strict_decode64(@raw_attachment['file_content'])
       File.open(file_path, 'wb') do |f|
         f.write(data)
       end

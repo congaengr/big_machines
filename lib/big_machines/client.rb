@@ -1,13 +1,10 @@
 module BigMachines
   class Client
-
     attr_reader :client
     attr_reader :headers
     attr_accessor :session_id
 
-    # The partner.wsdl is used by default but can be changed by passing in a new :wsdl option.
-    # A client_id can be
-    def initialize(site_name, options={})
+    def initialize(site_name, options = {})
       @site_name = site_name
       raise "Valid Site Name must be provided" if @site_name.nil? || @site_name.empty?
       @process_var_name = options[:process_name] || "quotes_process"
@@ -25,27 +22,27 @@ module BigMachines
       @client = Savon.client(configuration)
     end
 
-    def headers(type=:security)
+    def headers(type = :security)
       if type == :security
-        category = "Security"
+        category = 'Security'
         schema = "https://#{@site_name}.bigmachines.com/bmfsweb/#{@site_name}/schema/v1_0/security/Security.xsd"
       else
-        category = "Commerce"
+        category = 'Commerce'
         schema = "https://#{@site_name}.bigmachines.com/bmfsweb/#{@site_name}/schema/v1_0/commerce/#{@process_var_name}.xsd"
       end
 
       @headers = ''
       if @session_id
-        @headers << %Q{<bm:userInfo xmlns:bm="urn:soap.bigmachines.com">
+        @headers << %(<bm:userInfo xmlns:bm="urn:soap.bigmachines.com">
 <bm:sessionId>#{@session_id}</bm:sessionId>
-</bm:userInfo>}
+</bm:userInfo>)
       end
 
-      @headers << %Q{
+      @headers << %(
 <bm:category xmlns:bm="urn:soap.bigmachines.com">#{category}</bm:category>
 <bm:xsdInfo xmlns:bm="urn:soap.bigmachines.com">
 <bm:schemaLocation>#{schema}</bm:schemaLocation>
-</bm:xsdInfo>}.gsub(/\n/, '')
+</bm:xsdInfo>).delete("\n")
 
       @headers
     end
@@ -65,17 +62,15 @@ module BigMachines
     #
     # Returns Hash of login response and user info
     def login(username, password)
-      result = nil
-      message = {userInfo: {username: username, password: password}}
-      response = self.security_call(:login, message)
+      message = { userInfo: { username: username, password: password } }
+      response = security_call(:login, message)
 
-      userInfo = response["userInfo"]
-
-      @session_id = userInfo["sessionId"]
+      user_info = response['userInfo']
+      @session_id = user_info['sessionId']
 
       @security_client = Savon.client(configuration)
 
-      response["status"]["success"]
+      response['status']['success']
     end
     alias_method :authenticate, :login
 
@@ -100,7 +95,7 @@ module BigMachines
     #     </bm:return_specific_attributes>
     #   </bm:transaction>
     # </bm:getTransaction>
-    def get_transaction(id, document_var_name='quote_process')
+    def get_transaction(id, document_var_name = 'quote_process')
       transaction = {
         transaction: {
           id: id,
@@ -132,7 +127,7 @@ module BigMachines
     #     </bm:action_data>
     #   </bm:transaction>
     # </bm:updateTransaction>
-    def update_transaction(id, data={})
+    def update_transaction(id, data = {})
 
       # :opportunityName_quote => 'Test Oppty Auto Approval TinderBox 12',
       # :siteName_quote => 'My Dummy Site'
@@ -158,7 +153,7 @@ module BigMachines
     end
 
     # Returns a single BigMachines::Attachment based on the variable_name provided.
-    def get_attachment(transaction_id, variable_name, document_number: 1, mode: "content", inline: true)
+    def get_attachment(transaction_id, variable_name, document_number: 1, mode: 'content', inline: true)
 
       export = {
         mode: mode,
@@ -178,7 +173,7 @@ module BigMachines
       result = commerce_call(:export_file_attachments, export)
 
       attachments = []
-      result["attachments"].each do |key, data|
+      result['attachments'].each do |_key, data|
         attachments << BigMachines::Attachment.new(data)
       end
 
@@ -187,7 +182,6 @@ module BigMachines
 
     # Uploads a single file to the specified field in BigMachines
     def upload_attachment(transaction_id, file, variable_name, document_number: 1)
-
       import = {
         mode: 'update',
         attachments: {
@@ -242,7 +236,7 @@ module BigMachines
 
     protected
 
-    def configuration(custom={})
+    def configuration(custom = {})
       {
         wsdl: @security_wsdl,
         endpoint: @endpoint,
@@ -266,33 +260,32 @@ module BigMachines
 
     def client_api(wsdl)
       category = wsdl.include?('security') ? :security : :commerce
-      client = Savon.client(configuration(wsdl: wsdl, soap_header: headers(category)))
+      Savon.client(configuration(wsdl: wsdl, soap_header: headers(category)))
     end
 
-    def security_call(method, message_hash={})
+    def security_call(method, message_hash = {})
       call_soap_api(security_client, method, message_hash)
     end
 
-    def commerce_call(method, message_hash={})
+    def commerce_call(method, message_hash = {})
       call_soap_api(commerce_client, method, message_hash)
     end
 
-    def call_soap_api(client, method, message={})
+    def call_soap_api(client, method, message = {})
       response = client.call(method.to_sym, message: message)
       # Convert SOAP XML to Hash
       response = response.to_hash
 
       # Get Response Body
-      key = method.to_s.gsub(/_(\w)/) {|x| x[1].upcase }
+      key = method.to_s.gsub(/_(\w)/) { |x| x[1].upcase }
       response = response["#{key}Response"]
 
       # Raise error when response contains errors
-      if response.is_a?(Hash) && response["status"] && response["status"]["success"] == false
-        raise Savon::Error.new(response["status"]["message"])
+      if response.is_a?(Hash) && response['status'] && response['status']['success'] == false
+        raise Savon::Error.new(response['status']['message'])
       end
 
-      return response
+      response
     end
-
   end
 end
