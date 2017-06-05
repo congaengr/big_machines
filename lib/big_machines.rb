@@ -9,5 +9,6 @@ require 'big_machines/multi_part'
 require 'big_machines/mime_attachment'
 
 module BigMachines
-  # Your code goes here...
+  V1 = 'v1_0'.freeze
+  V2 = 'v2_0'.freeze
 end

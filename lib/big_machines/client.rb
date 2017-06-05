@@ -3,23 +3,41 @@ module BigMachines
     attr_reader :client
     attr_reader :headers
     attr_accessor :session_id
+    attr_reader :api_version
 
     def initialize(site_name, options = {})
       @site_name = site_name
-      raise "Valid Site Name must be provided" if @site_name.nil? || @site_name.empty?
-      @process_var_name = options[:process_name] || "quotes_process"
+      raise 'Valid Site Name must be provided' if @site_name.nil? || @site_name.empty?
+      @process_var_name = options[:process_name] || 'quotes_process'
       @logger = options[:logger] || false
 
-      @namespaces = {
-        "xmlns:bm" => "urn:soap.bigmachines.com"
+      @version = options[:api_version] || V1
+      @wsdl = options[:wsdl] || nil
+
+      @username = options[:username] || nil
+      @password = options[:password] || nil
+
+      namespace_map = {
+        V1 => 'urn:soap.bigmachines.com',
+        V2 => "http://xmlns.oracle.com/cpqcloud/commerce/#{@process_var_name}",
       }
 
-      @security_wsdl = File.dirname(__FILE__) + "/../../resources/security.wsdl.xml"
-      @commerce_wsdl = File.dirname(__FILE__) + "/../../resources/commerce.wsdl.xml"
+      @namespaces = {
+        'xmlns:bm' => namespace_map[@version]
+      }
 
-      @endpoint = "https://#{@site_name}.bigmachines.com/v1_0/receiver"
+      @security_wsdl = File.dirname(__FILE__) + '/../../resources/security.wsdl.xml'
+      @commerce_wsdl = File.dirname(__FILE__) + '/../../resources/commerce.wsdl.xml'
 
-      @client = Savon.client(configuration)
+      if @version == V1
+        @endpoint = "https://#{@site_name}.bigmachines.com/v1_0/receiver"
+        default_wsdl = @security_wsdl
+      else
+        @endpoint = "https://#{@site_name}.bigmachines.com/v2_0/receiver/commerce/#{@process_var_name}"
+        default_wsdl = @commerce_wsdl = @endpoint + '?wsdl'
+      end
+
+      @client = Savon.client(configuration.merge(wsdl: default_wsdl))
     end
 
     def headers(type = :security)
@@ -62,6 +80,12 @@ module BigMachines
     #
     # Returns Hash of login response and user info
     def login(username, password)
+      if @version == V2
+        @username = username
+        @password = password
+        return
+      end
+
       message = { userInfo: { username: username, password: password } }
       response = security_call(:login, message)
 
@@ -79,7 +103,6 @@ module BigMachines
     end
 
     # Commerce API
-    #
     # <bm:getTransaction xmlns:bm="urn:soap.bigmachines.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     #   <bm:transaction>
     #     <bm:id/>
@@ -242,7 +265,7 @@ module BigMachines
     protected
 
     def configuration(custom = {})
-      {
+      config = {
         wsdl: @security_wsdl,
         endpoint: @endpoint,
         soap_header: headers(:security),
@@ -253,6 +276,14 @@ module BigMachines
         logger: @logger,
         log: @logger != false
       }.merge(custom)
+
+      if @version == V2
+        config.delete(:soap_header)
+        config[:wsse_auth] = [@username, @password]
+        config[:namespaces] = @namespaces
+      end
+
+      config
     end
 
     def commerce_client
