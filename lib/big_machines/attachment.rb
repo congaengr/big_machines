@@ -16,6 +16,5 @@ module BigMachines
     def method_missing(method, *args)
       @raw_attachment[method.to_s]
     end
-
   end
 end

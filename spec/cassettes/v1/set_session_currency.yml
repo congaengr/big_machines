@@ -1,0 +1,58 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://newtempge.bigmachines.com/v1_0/receiver
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:targetNamespace="urn:soap.bigmachines.com" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Header><bm:userInfo xmlns:bm="urn:soap.bigmachines.com">
+        <bm:sessionId>nRw3Z0bcTbht1yvyV4mF3xXw3Q4DysT1gssrsQrWGyq18vMLzY2L!-1050761715!1496619804692</bm:sessionId>
+        </bm:userInfo><bm:category xmlns:bm="urn:soap.bigmachines.com">Security</bm:category><bm:xsdInfo xmlns:bm="urn:soap.bigmachines.com"><bm:schemaLocation>https://newtempge.bigmachines.com/bmfsweb/newtempge/schema/v1_0/security/Security.xsd</bm:schemaLocation></bm:xsdInfo></env:Header><env:Body><targetNamespace:setSessionCurrency><targetNamespace:sessionCurrency>USD</targetNamespace:sessionCurrency></targetNamespace:setSessionCurrency></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"setSessionCurrency"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '886'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 04 Jun 2017 23:43:25 GMT
+      Server:
+      - Unknown
+      X-Oracle-Dms-Ecid:
+      - 005KIfnqQxrFw000jzwkno0004^i00007L
+      Set-Cookie:
+      - JSESSIONID=51nzZ0bdXhWJSBlH6hLwHSMkJxtVSQhPBWdJCvT92Hhnhz0YQJH6!-1050761715;
+        path=/; secure; HttpOnly
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding,User-Agent
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Content-Language:
+      - en
+    body:
+      encoding: ASCII-8BIT
+      string: <?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><bm:setSessionCurrencyResponse
+        xmlns:bm="urn:soap.bigmachines.com"><bm:status><bm:success>true</bm:success><bm:message>Sun
+        Jun 04 18:43:25 CDT 2017 - Successfully processed API for newtempge</bm:message></bm:status></bm:setSessionCurrencyResponse></soapenv:Body></soapenv:Envelope>
+    http_version: 
+  recorded_at: Sun, 04 Jun 2017 23:43:25 GMT
+recorded_with: VCR 3.0.3

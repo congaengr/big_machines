@@ -25,4 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '>= 3.2.0', '< 4.0.0'
   spec.add_development_dependency 'webmock', '>= 2.2.0', '< 4.0.0'
   spec.add_development_dependency 'simplecov', '>= 0.11.2', '< 1.0.0'
+  spec.add_development_dependency 'vcr', '>= 3.0.0', '< 4.0.0'
+  spec.add_development_dependency 'pry-byebug', '>= 3.0.0', '< 4.0.0'
+  spec.add_development_dependency 'awesome_print', '>= 1.5.0', '< 2.0.0'
 end

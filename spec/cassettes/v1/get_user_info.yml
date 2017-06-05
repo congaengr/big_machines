@@ -1,0 +1,61 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://newtempge.bigmachines.com/v1_0/receiver
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:targetNamespace="urn:soap.bigmachines.com" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Header><bm:userInfo xmlns:bm="urn:soap.bigmachines.com">
+        <bm:sessionId>nRw3Z0bcTbht1yvyV4mF3xXw3Q4DysT1gssrsQrWGyq18vMLzY2L!-1050761715!1496619804692</bm:sessionId>
+        </bm:userInfo><bm:category xmlns:bm="urn:soap.bigmachines.com">Security</bm:category><bm:xsdInfo xmlns:bm="urn:soap.bigmachines.com"><bm:schemaLocation>https://newtempge.bigmachines.com/bmfsweb/newtempge/schema/v1_0/security/Security.xsd</bm:schemaLocation></bm:xsdInfo></env:Header><env:Body><targetNamespace:getUserInfo></targetNamespace:getUserInfo></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"getUserInfo"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '802'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 04 Jun 2017 23:43:25 GMT
+      Server:
+      - Unknown
+      X-Oracle-Dms-Ecid:
+      - 005KIfns4xWFw000jzwkno0004^i00007M
+      Set-Cookie:
+      - JSESSIONID=dRH2Z0bdLvczRyzldc2XpvLSnpwz2xwyVPh6W2TQytLsLNJqKD9J!-1050761715;
+        path=/; secure; HttpOnly
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding,User-Agent
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Content-Language:
+      - en
+    body:
+      encoding: ASCII-8BIT
+      string: <?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><bm:getUserInfoResponse
+        xmlns:bm="urn:soap.bigmachines.com"><bm:status><bm:success>true</bm:success><bm:message>Sun
+        Jun 04 18:43:25 CDT 2017 - Successfully processed API for newtempge</bm:message></bm:status><bm:userInfo><bm:company_name>newtempge</bm:company_name><bm:login>tbsupport</bm:login><bm:password/><bm:type>FullAccess</bm:type><bm:first_name>Joe</bm:first_name>
+        <bm:last_name>Smith</bm:last_name><bm:job_title/><bm:email>support@gettinderbox.com</bm:email><bm:phone/><bm:fax/><bm:bill_address_1/><bm:bill_address_2/><bm:bill_city/><bm:bill_state_province/><bm:bill_zip/><bm:bill_country/><bm:separate_ship_addr>true</bm:separate_ship_addr><bm:ship_address_1/><bm:ship_address_2/><bm:ship_city/><bm:ship_state_province/><bm:ship_zip/><bm:ship_country/><bm:notification_pref><bm:is_notify_email>true</bm:is_notify_email></bm:notification_pref><bm:bm_language>English</bm:bm_language><bm:currency_preference>USD</bm:currency_preference><bm:session_currency>USD</bm:session_currency><bm:bill_first_name/><bm:bill_last_name/><bm:bill_company/><bm:bill_company_2/><bm:bill_phone/><bm:bill_fax/><bm:bill_email/><bm:ship_first_name/><bm:ship_last_name/><bm:ship_company/><bm:ship_company_2/><bm:ship_phone/><bm:ship_fax/><bm:ship_email/><bm:bm_units>System
+        Default</bm:bm_units><bm:date_format>MM/dd/yyyy h:mm a</bm:date_format><bm:time_zone>(GMT-5:00
+        GMT-4:00) US Eastern Time</bm:time_zone><bm:number_format>####.##</bm:number_format><bm:partner_login/><bm:partner_password/><bm:status>Active</bm:status><bm:super_user_access_perm>1</bm:super_user_access_perm><bm:enabled_for_sso>0</bm:enabled_for_sso><bm:external_sso_id/><bm:approval_delegate/><bm:mobile_enabled>0</bm:mobile_enabled><bm:web_services_only>0</bm:web_services_only><bm:group_list><bm:group><bm:variable_name>pGS</bm:variable_name></bm:group><bm:group><bm:variable_name>cM</bm:variable_name></bm:group></bm:group_list></bm:userInfo></bm:getUserInfoResponse></soapenv:Body></soapenv:Envelope>
+    http_version:
+  recorded_at: Sun, 04 Jun 2017 23:43:25 GMT
+recorded_with: VCR 3.0.3

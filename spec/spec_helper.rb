@@ -1,14 +1,24 @@
 require 'simplecov'
+require 'webmock/rspec'
+require 'vcr'
+require 'pry-byebug'
+require 'awesome_print'
+
 SimpleCov.start do
-	add_filter '/vendor/'
+  add_filter '/vendor/'
 end
 
 require 'bundler/setup'
 Bundler.require :default, :test
 
-require 'webmock/rspec'
-
 WebMock.disable_net_connect!
+
+VCR.configure do |config|
+  config.ignore_localhost = true
+  config.allow_http_connections_when_no_cassette = true
+  config.cassette_library_dir = 'spec/cassettes'
+  config.hook_into :webmock
+end
 
 RSpec.configure do |config|
   config.order = 'random'

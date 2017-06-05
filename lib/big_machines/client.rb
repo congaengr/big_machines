@@ -96,6 +96,8 @@ module BigMachines
     #   </bm:transaction>
     # </bm:getTransaction>
     def get_transaction(id, document_var_name = 'quote_process')
+      # NOTE: return_specific_attributes is optional
+      # All attributes are returned when not defined.
       transaction = {
         transaction: {
           id: id,
@@ -154,7 +156,6 @@ module BigMachines
 
     # Returns a single BigMachines::Attachment based on the variable_name provided.
     def get_attachment(transaction_id, variable_name, document_number: 1, mode: 'content', inline: true)
-
       export = {
         mode: mode,
         inline: inline,
@@ -172,6 +173,10 @@ module BigMachines
 
       result = commerce_call(:export_file_attachments, export)
 
+      if result.is_a?(MultiPart)
+        return MimeAttachment.new(result)
+      end
+
       attachments = []
       result['attachments'].each do |_key, data|
         attachments << BigMachines::Attachment.new(data)
@@ -188,7 +193,7 @@ module BigMachines
           attachment: {
             document_number: document_number,
             variable_name: variable_name,
-            filename: file.path,
+            filename: File.basename(file.path),
             file_content: Base64.strict_encode64(file.read)
           }
         },
@@ -273,6 +278,12 @@ module BigMachines
 
     def call_soap_api(client, method, message = {})
       response = client.call(method.to_sym, message: message)
+
+      content_type = response.http.headers['content-type'].to_s
+      if content_type.include?('multipart')
+        return MultiPart.new(response.http.headers, response.xml)
+      end
+
       # Convert SOAP XML to Hash
       response = response.to_hash
 

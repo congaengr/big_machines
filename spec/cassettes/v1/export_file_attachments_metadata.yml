@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://newtempge.bigmachines.com/v1_0/receiver
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:targetNamespace="urn:soap.bigmachines.com" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"><env:Header><bm:userInfo xmlns:bm="urn:soap.bigmachines.com">
+        <bm:sessionId>9hQnZ0jMgpv27GyZC6z7sbYq12zYzkHVD2gxlhmzc6GpLnX4MV1H!-1050761715!1496621836546</bm:sessionId>
+        </bm:userInfo><bm:category xmlns:bm="urn:soap.bigmachines.com">Commerce</bm:category><bm:xsdInfo xmlns:bm="urn:soap.bigmachines.com"><bm:schemaLocation>https://newtempge.bigmachines.com/bmfsweb/newtempge/schema/v1_0/commerce/quotes_process_bmClone_16.xsd</bm:schemaLocation></bm:xsdInfo></env:Header><env:Body><targetNamespace:exportFileAttachments><targetNamespace:mode>metadata</targetNamespace:mode><targetNamespace:inline>true</targetNamespace:inline><targetNamespace:attachments><targetNamespace:attachment><targetNamespace:document_number>1</targetNamespace:document_number><targetNamespace:variable_name>uploadEngineeringTemplate_File</targetNamespace:variable_name></targetNamespace:attachment></targetNamespace:attachments><targetNamespace:transaction><targetNamespace:process_var_name>quotes_process_bmClone_16</targetNamespace:process_var_name><targetNamespace:id>34706909</targetNamespace:id></targetNamespace:transaction></targetNamespace:exportFileAttachments></env:Body></env:Envelope>
+    headers:
+      Soapaction:
+      - '"exportFileAttachments"'
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '1424'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 05 Jun 2017 00:36:52 GMT
+      Server:
+      - Unknown
+      X-Oracle-Dms-Ecid:
+      - 005KIin2ImgFw000jzwkno0004^i0000Fm
+      Set-Cookie:
+      - JSESSIONID=gd6GZ0nG1Dn3BJQ5JgcGSJHhdlGwJbL9WLHvRFJHtRXGDS4CrJ3F!-1050761715;
+        path=/; secure; HttpOnly
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding,User-Agent
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Content-Language:
+      - en
+    body:
+      encoding: ASCII-8BIT
+      string: <?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><bm:exportFileAttachmentsResponse
+        xmlns:bm="urn:soap.bigmachines.com"><bm:status><bm:success>true</bm:success><bm:message>Sun
+        Jun 04 19:36:52 CDT 2017 - Successfully processed API for newtempge</bm:message></bm:status><bm:id>34706909</bm:id><bm:attachments><bm:attachment><bm:document_number>1</bm:document_number><bm:variable_name>uploadEngineeringTemplate_File</bm:variable_name><bm:filename>sample-document.docx</bm:filename><bm:size>117259</bm:size><bm:added_date>2017-06-04
+        18:58:50</bm:added_date><bm:last_modified_date>2017-06-04 19:31:51</bm:last_modified_date></bm:attachment></bm:attachments></bm:exportFileAttachmentsResponse></soapenv:Body></soapenv:Envelope>
+    http_version:
+  recorded_at: Mon, 05 Jun 2017 00:36:52 GMT
+recorded_with: VCR 3.0.3
