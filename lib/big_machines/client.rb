@@ -8,6 +8,7 @@ module BigMachines
       @site_name = site_name
       raise "Valid Site Name must be provided" if @site_name.nil? || @site_name.empty?
       @process_var_name = options[:process_name] || "quotes_process"
+      @transaction_element_name = options[:transaction_name] || 'quote_process'
       @logger = options[:logger] || false
 
       @namespaces = {
@@ -95,7 +96,9 @@ module BigMachines
     #     </bm:return_specific_attributes>
     #   </bm:transaction>
     # </bm:getTransaction>
-    def get_transaction(id, document_var_name = 'quote_process')
+    def get_transaction(id, document_var_name = nil)
+      document_var_name ||= @transaction_element_name
+
       # NOTE: return_specific_attributes is optional
       # All attributes are returned when not defined.
       transaction = {
@@ -133,7 +136,7 @@ module BigMachines
 
       # :opportunityName_quote => 'Test Oppty Auto Approval TinderBox 12',
       # :siteName_quote => 'My Dummy Site'
-      quote_process_data = {
+      quote_data = {
         :"@bs_id" => id,
         :"@data_type" => 0,
         :"@document_number" => 1
@@ -143,7 +146,7 @@ module BigMachines
         transaction: {
           id: id,
           data_xml: {
-            quote_process: quote_process_data
+            @transaction_element_name => quote_data
           },
           action_data: {
             action_var_name: '_update_line_items'
